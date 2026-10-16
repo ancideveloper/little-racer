@@ -90,7 +90,7 @@ const game = {
     rig.update(dt, route, game.s, car, speed.v, colliders, speed.started);
     sky.update(dt, car.root.position, rig.camera.position);
     for (const h of game.hooks) h(dt, game);
-    ui.update(car, rig.camera, stopped, game.stoppedFor);
+    ui.update(car, rig.camera, stopped, game.stoppedFor, speed.v / CFG.MAX_SPEED);
   },
 
   resize() {

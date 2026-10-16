@@ -6,7 +6,8 @@ export function createUI() {
   const hint = document.getElementById('hint');
   const cue = document.getElementById('cue');
   const v = new THREE.Vector3();
-  let started = false;
+  const fill = document.querySelector('#gauge .fill');
+  let started = false, shown = -1;
 
   return {
     onFirstInput() {
@@ -16,7 +17,9 @@ export function createUI() {
     },
 
     /** Position the cue just above the car on screen (clamped so it is always visible). */
-    update(car, camera, stopped, stoppedFor) {
+    update(car, camera, stopped, stoppedFor, speedFrac = 0) {
+      const pct = Math.round(Math.min(1, Math.max(0, speedFrac)) * 200) / 2;        // 0.5 % steps
+      if (pct !== shown) { shown = pct; fill.style.clipPath = `inset(0 ${100 - pct}% 0 0)`; }
       const show = stopped && stoppedFor > (started ? 0.35 : 0);
       cue.classList.toggle('on', show);
       if (!show) return;
